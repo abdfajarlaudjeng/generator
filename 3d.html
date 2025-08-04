@@ -5,37 +5,79 @@
   <title>Filter Kombinasi 3D dengan Shio</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col items-center p-4">
-  <div class="w-full max-w-3xl bg-white rounded-lg shadow p-6">
-    <h2 class="text-2xl font-semibold mb-6 text-center">Filter Kombinasi 3D dengan Shio</h2>
+<body class="bg-gray-50 min-h-screen flex">
 
-    <label for="dataKombinasi" class="block font-medium mb-1">Data Kombinasi (3 digit, pisah spasi/koma):</label>
-    <textarea id="dataKombinasi" placeholder="Misal: 123 456 789,012" class="w-full rounded border border-gray-300 p-2 mb-6 resize-none h-24"></textarea>
+  <!-- Sidebar -->
+  <nav class="w-64 h-screen bg-gray-800 text-white p-4 flex-shrink-0">
+    <div class="text-xl font-bold mb-6">MyApp</div>
+    <ul class="space-y-2">
+      <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">Beranda</a></li>
 
-    <label for="angkaMain" class="block font-medium mb-1">Angka Main (per baris, digit terakhir digunakan):</label>
-    <textarea id="angkaMain" placeholder="Misal:\n3\n5\n7" class="w-full rounded border border-gray-300 p-2 mb-6 resize-none h-24"></textarea>
+      <!-- Dropdown -->
+      <li class="group relative">
+        <button class="w-full flex justify-between items-center px-2 py-1 hover:bg-gray-700 rounded focus:outline-none">
+          Angka Main
+          <svg class="w-4 h-4 ml-2 transform group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
 
-    <label for="shioMain" class="block font-medium mb-1">Pilih Shio:</label>
-    <select id="shioMain" class="w-full rounded border border-gray-300 p-2 mb-6">
-      <option value="all">Semua Shio</option>
-      <option value="Ular">Ular</option>
-      <option value="Naga">Naga</option>
-      <option value="Kelinci">Kelinci</option>
-      <option value="Harimau">Harimau</option>
-      <option value="Kerbau">Kerbau</option>
-      <option value="Tikus">Tikus</option>
-      <option value="Babi">Babi</option>
-      <option value="Anjing">Anjing</option>
-      <option value="Ayam">Ayam</option>
-      <option value="Monyet">Monyet</option>
-      <option value="Kambing">Kambing</option>
-      <option value="Kuda">Kuda</option>
-    </select>
+        <ul class="ml-4 mt-2 hidden group-hover:block space-y-1">
+          <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">Prediksi 2D</a></li>
+          <li class="group relative">
+            <button class="w-full text-left flex justify-between items-center px-2 py-1 hover:bg-gray-700 rounded">
+              Angka Main 2D
+              <svg class="w-4 h-4 ml-2 transform group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <!-- Sub-dropdown -->
+            <ul class="ml-4 mt-2 hidden group-hover:block space-y-1">
+              <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">2D AS</a></li>
+              <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">2D SHIO</a></li>
+            </ul>
+          </li>
+          <li><a href="3d.html" class="block px-2 py-1 hover:bg-gray-700 rounded">Prediksi 3D</a></li>
+        </ul>
+      </li>
 
-    <button onclick="filterAngka()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded mb-6 transition">Filter Kombinasi</button>
+      <li><a href="#" class="block px-2 py-1 hover:bg-gray-700 rounded">4D</a></li>
+    </ul>
+  </nav>
 
-    <div id="result" class="whitespace-pre-wrap bg-gray-100 p-4 rounded min-h-[100px] text-gray-800"></div>
-  </div>
+  <!-- Konten utama -->
+  <main class="flex-1 p-4 overflow-auto">
+    <div class="max-w-3xl bg-white rounded-lg shadow p-6 mx-auto">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Filter Kombinasi 3D dengan Shio</h2>
+
+      <label for="dataKombinasi" class="block font-medium mb-1">Data Kombinasi (3 digit, pisah spasi/koma):</label>
+      <textarea id="dataKombinasi" placeholder="Misal: 123 456 789,012" class="w-full rounded border border-gray-300 p-2 mb-6 resize-none h-24"></textarea>
+
+      <label for="angkaMain" class="block font-medium mb-1">Angka Main (per baris, digit terakhir digunakan):</label>
+      <textarea id="angkaMain" placeholder="Misal:\n3\n5\n7" class="w-full rounded border border-gray-300 p-2 mb-6 resize-none h-24"></textarea>
+
+      <label for="shioMain" class="block font-medium mb-1">Pilih Shio:</label>
+      <select id="shioMain" class="w-full rounded border border-gray-300 p-2 mb-6">
+        <option value="all">Semua Shio</option>
+        <option value="Ular">Ular</option>
+        <option value="Naga">Naga</option>
+        <option value="Kelinci">Kelinci</option>
+        <option value="Harimau">Harimau</option>
+        <option value="Kerbau">Kerbau</option>
+        <option value="Tikus">Tikus</option>
+        <option value="Babi">Babi</option>
+        <option value="Anjing">Anjing</option>
+        <option value="Ayam">Ayam</option>
+        <option value="Monyet">Monyet</option>
+        <option value="Kambing">Kambing</option>
+        <option value="Kuda">Kuda</option>
+      </select>
+
+      <button onclick="filterAngka()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded mb-6 transition">Filter Kombinasi</button>
+
+      <div id="result" class="whitespace-pre-wrap bg-gray-100 p-4 rounded min-h-[100px] text-gray-800"></div>
+    </div>
+  </main>
 
   <script>
     const shioMap = {
