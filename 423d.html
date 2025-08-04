@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Generator Kombinasi Togel dengan Navbar & Filter Angka Main</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+    nav {
+      background: white;
+      width: 16rem;
+      min-height: 100vh;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    nav h1 {
+      font-weight: bold;
+      font-size: 1.25rem;
+      color: #2d3748;
+      margin-bottom: 2rem;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex-grow: 1;
+    }
+    nav ul li a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.375rem;
+      color: #1a202c;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    nav ul li a:hover {
+      background-color: #2563eb;
+      color: white;
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    #result {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+    .flex-row {
+      display: flex;
+      gap: 10px;
+    }
+    .flex-row > * {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Navbar kiri -->
+    <nav>
+      <h1>Prediksi 2D ALL PASARAN</h1>
+      <ul>
+        <li><a href="index.html">Data 2D</a></li>
+        <li><a href="2DAS.html">2D BBFS AS</a></li>
+        <li><a href="Final2d1.html">2D KEPALA - EKOR</a></li>
+        <li><a href="2dshio.html">2D SHIO MAIN</a></li>
+        <li><a href="final2d.html">REKAP PREDIKSI</a></li>
+        <li><a href="beting.html">Beting Pasaran</a></li>
+        <li><a href="kombinasi423d.html">Kombinasi 423D</a></li>
+        <li><a href="3D.html">Prediksi 3D</a></li>
+      </ul>
+    </nav>
+
+    <!-- Konten utama -->
+    <main>
+      <h2>Generator Togel 2D, 3D, 4D + Filter Ganjil/Genap</h2>
+
+      <label>AS:</label>
+      <input type="text" id="as" value="1234567890">
+
+      <label>KOP:</label>
+      <input type="text" id="kop" value="1234567890">
+
+      <label>KEPALA:</label>
+      <input type="text" id="kepala" value="1234567890">
+
+      <label>EKOR:</label>
+      <input type="text" id="ekor" value="1234567890">
+
+      <label>Filter Ganjil/Genap:</label>
+      <select id="filter">
+        <option value="all">Semua</option>
+        <option value="ganjil">Hanya Ganjil</option>
+        <option value="genap">Hanya Genap</option>
+      </select>
+
+      <div class="flex-row">
+        <button onclick="generateAll()">🔄 Generate</button>
+        <button onclick="downloadByType('2D')">⬇️ Download 2D</button>
+        <button onclick="downloadByType('3D')">⬇️ Download 3D</button>
+        <button onclick="downloadByType('4D')">⬇️ Download 4D</button>
+      </div>
+
+      <hr style="margin: 2rem 0;">
+
+      <h3>Filter Kombinasi 3D berdasarkan Angka Main</h3>
+
+      <label>Data Kombinasi (pisahkan dengan spasi, koma, atau enter):</label>
+      <textarea id="dataKombinasi" rows="4" placeholder="Masukkan data kombinasi 3D"></textarea>
+
+      <label>Angka Main (satu angka per baris, bisa 1-6 digit):</label>
+      <textarea id="angkaMain" rows="4" placeholder="Masukkan angka main"></textarea>
+
+      <label>Shio Main:</label>
+      <select id="shioMain">
+        <option value="all">Semua</option>
+        <option value="shio1">Shio 1</option>
+        <option value="shio2">Shio 2</option>
+        <!-- Tambahkan opsi shio lain sesuai kebutuhan -->
+      </select>
+
+      <button onclick="filterAngka()">🔎 Filter Angka Main</button>
+
+      <div id="result">Output akan muncul di sini...</div>
+    </main>
+  </div>
+
+  <script>
+    let combos = { "2D": [], "3D": [], "4D": [] };
+
+    function isGanjil(str) {
+      const lastDigit = parseInt(str[str.length - 1]);
+      return lastDigit % 2 === 1;
+    }
+
+    function isGenap(str) {
+      const lastDigit = parseInt(str[str.length - 1]);
+      return lastDigit % 2 === 0;
+    }
+
+    function filterCombo(list) {
+      const filter = document.getElementById("filter").value;
+      if (filter === 'ganjil') return list.filter(isGanjil);
+      if (filter === 'genap') return list.filter(isGenap);
+      return list;
+    }
+
+    function generateAll() {
+      const as = document.getElementById("as").value.trim().split('');
+      const kop = document.getElementById("kop").value.trim().split('');
+      const kepala = document.getElementById("kepala").value.trim().split('');
+      const ekor = document.getElementById("ekor").value.trim().split('');
+
+      combos["2D"] = [];
+      combos["3D"] = [];
+      combos["4D"] = [];
+
+      // 2D
+      for (let k of kepala) {
+        for (let e of ekor) {
+          combos["2D"].push(`${k}${e}`);
+        }
+      }
+
+      // 3D
+      for (let ko of kop) {
+        for (let k of kepala) {
+          for (let e of ekor) {
+            combos["3D"].push(`${ko}${k}${e}`);
+          }
+        }
+      }
+
+      // 4D
+      for (let a of as) {
+        for (let ko of kop) {
+          for (let k of kepala) {
+            for (let e of ekor) {
+              combos["4D"].push(`${a}${ko}${k}${e}`);
+            }
+          }
+        }
+      }
+
+      const out2D = filterCombo(combos["2D"]).map(x => x + '*');
+      const out3D = filterCombo(combos["3D"]).map(x => x + '*');
+      const out4D = filterCombo(combos["4D"]).map(x => x + '*');
+
+      document.getElementById("result").innerText =
+`✅ Total Kombinasi (setelah filter):
+2D: ${out2D.length}
+3D: ${out3D.length}
+4D: ${out4D.length}
+
+🎯 2D:
+${out2D.join('')}
+
+🎯 3D:
+${out3D.join('')}
+
+🎯 4D:
+${out4D.join('')}
+`;
+    }
+
+    function downloadByType(type) {
+      if (!combos[type] || combos[type].length === 0) {
+        alert("Silakan generate dulu.");
+        return;
+      }
+
+      const filtered = filterCombo(combos[type]);
+      const text = filtered.map(x => x + '*').join('');
+
+      const blob = new Blob([`Kombinasi ${type} (${filtered.length} angka):\n${text}`], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `kombinasi_${type.toLowerCase()}.txt`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function filterAngka() {
+      const rawData = document.getElementById("dataKombinasi").value.trim();
+      const angkaMainRaw = document.getElementById("angkaMain").value.trim();
+      const shioMain = document.getElementById("shioMain").value;
+      const resultDiv = document.getElementById("result");
+
+      if (!rawData) {
+        alert("Masukkan data kombinasi terlebih dahulu.");
+        return;
+      }
+
+      if (!angkaMainRaw) {
+        alert("Masukkan angka main terlebih dahulu.");
+        return;
+      }
+
+      // Ambil kombinasi 3 digit dari rawData
+      let kombinasi3D = rawData.split(/[\s,*]+/).filter(k => k.length === 3);
+
+      if (kombinasi3D.length === 0) {
+        resultDiv.textContent = "Data kombinasi tidak valid atau tidak ada kombinasi 3 digit.";
+        return;
+      }
+
+      // Validasi angka main, tiap baris angka max 6 digit angka
+      const angkaMainLines = angkaMainRaw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      for (const line of angkaMainLines) {
+        if (!line.match(/^\d{1,6}$/)) {
+          alert("Setiap baris angka main harus berupa digit (maks 6 digit). Contoh:\n123\n45");
+          return;
+        }
+      }
+
+      // Ambil ekor dari angka main (digit terakhir tiap baris)
+      let ekorMain = angkaMainLines.map(line => line.slice(-1));
+
+      // Filter kombinasi 3D yang ekornya ada di ekorMain
+      let hasilFilter = kombinasi3D.filter(k => ekorMain.includes(k.slice(-1)));
+
+      // Contoh filter shioMain (ganti dengan logika asli kalau ada)
+      if (shioMain !== "all") {
+        hasilFilter = hasilFilter.filter(k => k.includes("1")); // dummy filter shio
+      }
+
+      if (hasilFilter.length === 0) {
+        resultDiv.textContent = "Tidak ditemukan kombinasi yang cocok dengan angka main dan filter shio.";
+        return;
+      }
+
+      // Tampilkan hasil di result
+      resultDiv.textContent = `✅ Hasil filter (${hasilFilter.length} kombinasi):\n` + hasilFilter.join('\n');
+    }
+  </script>
+
+</body>
+</html>
