@@ -2,263 +2,57 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Generator Kombinasi Togel dengan Navbar & Filter Angka Main</title>
+  <title>Filter Kombinasi 3D dengan Shio</title>
   <style>
-    body, html {
-      margin: 0; padding: 0; height: 100%;
-      font-family: Arial, sans-serif;
-      background: #f9fafb;
-    }
-    .container {
-      display: flex;
-      min-height: 100vh;
-    }
-    nav {
-      background: white;
-      width: 16rem;
-      min-height: 100vh;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      position: sticky;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    nav h1 {
-      font-weight: bold;
-      font-size: 1.25rem;
-      color: #2d3748;
-      margin-bottom: 2rem;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex-grow: 1;
-    }
-    nav ul li a {
-      display: block;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.375rem;
-      color: #1a202c;
-      text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    nav ul li a:hover {
-      background-color: #2563eb;
-      color: white;
-    }
-    main {
-      flex-grow: 1;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 0 12px rgba(0,0,0,0.05);
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-    input, select, button, textarea {
-      width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-family: inherit;
-    }
-    #result {
-      background: #f4f4f4;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px;
-      white-space: pre-wrap;
-      max-height: 400px;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      margin-top: 1rem;
-    }
-    .flex-row {
-      display: flex;
-      gap: 10px;
-    }
-    .flex-row > * {
-      flex: 1;
-    }
+    textarea { width: 300px; height: 100px; }
+    #result { white-space: pre-wrap; margin-top: 20px; background: #eee; padding: 10px; }
   </style>
 </head>
 <body>
+  <h2>Filter Kombinasi 3D dengan Shio</h2>
 
-  <div class="container">
-    <!-- Navbar kiri -->
-    <nav>
-      <h1>Prediksi 2D ALL PASARAN</h1>
-      <ul>
-        <li><a href="index.html">Data 2D</a></li>
-        <li><a href="2DAS.html">2D BBFS AS</a></li>
-        <li><a href="Final2d1.html">2D KEPALA - EKOR</a></li>
-        <li><a href="2dshio.html">2D SHIO MAIN</a></li>
-        <li><a href="final2d.html">REKAP PREDIKSI</a></li>
-        <li><a href="beting.html">Beting Pasaran</a></li>
-        <li><a href="kombinasi423d.html">Kombinasi 423D</a></li>
-        <li><a href="3D.html">Prediksi 3D</a></li>
-      </ul>
-    </nav>
+  <label for="dataKombinasi">Data Kombinasi (3 digit, pisah spasi/koma):</label><br />
+  <textarea id="dataKombinasi" placeholder="Misal: 123 456 789,012"></textarea><br /><br />
 
-    <!-- Konten utama -->
-    <main>
-      <h2>Generator Togel 2D, 3D, 4D + Filter Ganjil/Genap</h2>
+  <label for="angkaMain">Angka Main (per baris, digit terakhir digunakan):</label><br />
+  <textarea id="angkaMain" placeholder="Misal:\n3\n5\n7"></textarea><br /><br />
 
-      <label>AS:</label>
-      <input type="text" id="as" value="1234567890">
+  <label for="shioMain">Pilih Shio:</label>
+  <select id="shioMain">
+    <option value="all">Semua Shio</option>
+    <option value="Ular">Ular</option>
+    <option value="Naga">Naga</option>
+    <option value="Kelinci">Kelinci</option>
+    <option value="Harimau">Harimau</option>
+    <option value="Kerbau">Kerbau</option>
+    <option value="Tikus">Tikus</option>
+    <option value="Babi">Babi</option>
+    <option value="Anjing">Anjing</option>
+    <option value="Ayam">Ayam</option>
+    <option value="Monyet">Monyet</option>
+    <option value="Kambing">Kambing</option>
+    <option value="Kuda">Kuda</option>
+  </select><br /><br />
 
-      <label>KOP:</label>
-      <input type="text" id="kop" value="1234567890">
+  <button onclick="filterAngka()">Filter Kombinasi</button>
 
-      <label>KEPALA:</label>
-      <input type="text" id="kepala" value="1234567890">
-
-      <label>EKOR:</label>
-      <input type="text" id="ekor" value="1234567890">
-
-      <label>Filter Ganjil/Genap:</label>
-      <select id="filter">
-        <option value="all">Semua</option>
-        <option value="ganjil">Hanya Ganjil</option>
-        <option value="genap">Hanya Genap</option>
-      </select>
-
-      <div class="flex-row">
-        <button onclick="generateAll()">🔄 Generate</button>
-        <button onclick="downloadByType('2D')">⬇️ Download 2D</button>
-        <button onclick="downloadByType('3D')">⬇️ Download 3D</button>
-        <button onclick="downloadByType('4D')">⬇️ Download 4D</button>
-      </div>
-
-      <hr style="margin: 2rem 0;">
-
-      <h3>Filter Kombinasi 3D berdasarkan Angka Main</h3>
-
-      <label>Data Kombinasi (pisahkan dengan spasi, koma, atau enter):</label>
-      <textarea id="dataKombinasi" rows="4" placeholder="Masukkan data kombinasi 3D"></textarea>
-
-      <label>Angka Main (satu angka per baris, bisa 1-6 digit):</label>
-      <textarea id="angkaMain" rows="4" placeholder="Masukkan angka main"></textarea>
-
-      <label>Shio Main:</label>
-      <select id="shioMain">
-        <option value="all">Semua</option>
-        <option value="shio1">Shio 1</option>
-        <option value="shio2">Shio 2</option>
-        <!-- Tambahkan opsi shio lain sesuai kebutuhan -->
-      </select>
-
-      <button onclick="filterAngka()">🔎 Filter Angka Main</button>
-
-      <div id="result">Output akan muncul di sini...</div>
-    </main>
-  </div>
+  <div id="result"></div>
 
   <script>
-    let combos = { "2D": [], "3D": [], "4D": [] };
-
-    function isGanjil(str) {
-      const lastDigit = parseInt(str[str.length - 1]);
-      return lastDigit % 2 === 1;
-    }
-
-    function isGenap(str) {
-      const lastDigit = parseInt(str[str.length - 1]);
-      return lastDigit % 2 === 0;
-    }
-
-    function filterCombo(list) {
-      const filter = document.getElementById("filter").value;
-      if (filter === 'ganjil') return list.filter(isGanjil);
-      if (filter === 'genap') return list.filter(isGenap);
-      return list;
-    }
-
-    function generateAll() {
-      const as = document.getElementById("as").value.trim().split('');
-      const kop = document.getElementById("kop").value.trim().split('');
-      const kepala = document.getElementById("kepala").value.trim().split('');
-      const ekor = document.getElementById("ekor").value.trim().split('');
-
-      combos["2D"] = [];
-      combos["3D"] = [];
-      combos["4D"] = [];
-
-      // 2D
-      for (let k of kepala) {
-        for (let e of ekor) {
-          combos["2D"].push(`${k}${e}`);
-        }
-      }
-
-      // 3D
-      for (let ko of kop) {
-        for (let k of kepala) {
-          for (let e of ekor) {
-            combos["3D"].push(`${ko}${k}${e}`);
-          }
-        }
-      }
-
-      // 4D
-      for (let a of as) {
-        for (let ko of kop) {
-          for (let k of kepala) {
-            for (let e of ekor) {
-              combos["4D"].push(`${a}${ko}${k}${e}`);
-            }
-          }
-        }
-      }
-
-      const out2D = filterCombo(combos["2D"]).map(x => x + '*');
-      const out3D = filterCombo(combos["3D"]).map(x => x + '*');
-      const out4D = filterCombo(combos["4D"]).map(x => x + '*');
-
-      document.getElementById("result").innerText =
-`✅ Total Kombinasi (setelah filter):
-2D: ${out2D.length}
-3D: ${out3D.length}
-4D: ${out4D.length}
-
-🎯 2D:
-${out2D.join('')}
-
-🎯 3D:
-${out3D.join('')}
-
-🎯 4D:
-${out4D.join('')}
-`;
-    }
-
-    function downloadByType(type) {
-      if (!combos[type] || combos[type].length === 0) {
-        alert("Silakan generate dulu.");
-        return;
-      }
-
-      const filtered = filterCombo(combos[type]);
-      const text = filtered.map(x => x + '*').join('');
-
-      const blob = new Blob([`Kombinasi ${type} (${filtered.length} angka):\n${text}`], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `kombinasi_${type.toLowerCase()}.txt`;
-      link.click();
-      URL.revokeObjectURL(url);
-    }
+    const shioMap = {
+      "Ular": ["00","02","04","05","06","07","08","09","11","14","16","17","18","19","20","21","23","26","28","29","30","31","32","33","35","38","40","41","42","43","44","45","47","50","52","53","54","55","56","57","59","62","64","65","66","67","68","69","71","74","76","77","78","79","80","81","83","86","88","89","90","91","92","93","95","98"],
+      "Naga": ["03","05","06","07","08","09","10","12","15","17","18","19","20","21","22","24","27","29","30","31","32","33","34","36","39","41","42","43","44","45","46","48","51","53","54","55","56","57","58","60","63","65","66","67","68","69","70","72","75","77","78","79","80","81","82","84","87","89","90","91","92","93","94","96","99"],
+      "Kelinci": ["00","01","04","06","07","08","09","10","11","13","16","18","19","20","21","22","23","25","28","30","31","32","33","34","35","37","40","42","43","44","45","46","47","49","52","54","55","56","57","58","59","61","64","66","67","68","69","70","71","73","76","78","79","80","81","82","83","85","88","90","91","92","93","94","95","97"],
+      "Harimau": ["01","02","07","08","09","10","11","12","13","14","19","20","21","22","23","24","25","26","31","32","33","34","35","36","37","38","43","44","45","46","47","48","49","50","55","56","57","58","59","60","61","62","67","68","69","70","71","72","73","74","79","80","81","82","83","84","85","86","91","92","93","94","95","96","97","98"],
+      "Kerbau": ["01","06","07","08","09","10","11","12","13","18","19","20","21","22","23","24","25","30","31","32","33","34","35","36","37","42","43","44","45","46","47","48","49","54","55","56","57","58","59","60","61","66","67","68","69","70","71","72","73","78","79","80","81","82","83","84","85","90","91","92","93","94","95","96","97"],
+      "Tikus": ["00","01","02","04","05","07","10","11","12","13","14","16","17","19","22","23","24","25","26","28","29","31","34","35","36","37","38","40","41","43","46","47","48","49","50","52","53","55","58","59","60","61","62","64","65","67","70","71","72","73","74","76","77","79","82","83","84","85","86","88","89","91","94","95","96","97","98"],
+      "Babi": ["00","01","02","04","05","09","10","11","12","13","14","16","17","21","22","23","24","25","26","28","29","33","34","35","36","37","38","40","41","45","46","47","48","49","50","52","53","57","58","59","60","61","62","64","65","69","70","71","72","73","74","76","77","81","82","83","84","85","86","88","89","93","94","95","96","97","98"],
+      "Anjing": ["00","01","02","03","04","06","09","11","12","13","14","15","16","18","21","23","24","25","26","27","28","30","33","35","36","37","38","39","40","42","45","47","48","49","50","51","52","54","57","59","60","61","62","63","64","66","69","71","72","73","74","75","76","78","81","83","84","85","86","87","88","90","93","95","96","97","98","99"],
+      "Ayam": ["00","01","02","03","04","07","08","10","11","13","14","15","16","19","20","22","23","25","26","27","28","31","32","34","35","37","38","39","40","43","44","46","47","49","50","51","52","55","56","58","59","61","62","63","64","67","68","70","71","73","74","75","76","79","80","82","83","85","86","87","88","91","92","94","95","97","98","99"],
+      "Monyet": ["00","01","02","03","04","05","06","08","11","13","14","15","16","17","18","20","23","25","26","27","28","29","30","32","35","37","38","39","40","41","42","44","47","49","50","51","52","53","54","56","59","61","62","63","64","65","66","68","71","73","74","75","76","77","78","80","83","85","86","87","88","89","90","92","95","97","98","99"],
+      "Kambing": ["00","02","03","04","05","06","07","09","12","14","15","16","17","18","19","21","24","26","27","28","29","30","31","33","36","38","39","40","41","42","43","45","48","50","51","52","53","54","55","57","60","62","63","64","65","66","67","69","72","74","75","76","77","78","79","81","84","86","87","88","89","90","91","93","96","98","99"],
+      "Kuda": ["00","03","04","05","06","07","08","09","10","15","16","17","18","19","20","21","22","27","28","29","30","31","32","33","34","39","40","41","42","43","44","45","46","51","52","53","54","55","56","57","58","63","64","65","66","67","68","69","70","75","76","77","78","79","80","81","82","87","88","89","90","91","92","93","94","99"]
+    };
 
     function filterAngka() {
       const rawData = document.getElementById("dataKombinasi").value.trim();
@@ -270,21 +64,20 @@ ${out4D.join('')}
         alert("Masukkan data kombinasi terlebih dahulu.");
         return;
       }
-
       if (!angkaMainRaw) {
         alert("Masukkan angka main terlebih dahulu.");
         return;
       }
 
-      // Ambil kombinasi 3 digit dari rawData
-      let kombinasi3D = rawData.split(/[\s,*]+/).filter(k => k.length === 3);
+      // Split kombinasi 3D, filter yang length=3 dan valid angka
+      let kombinasi3D = rawData.split(/[\s,*]+/).filter(k => k.length === 3 && /^\d{3}$/.test(k));
 
       if (kombinasi3D.length === 0) {
         resultDiv.textContent = "Data kombinasi tidak valid atau tidak ada kombinasi 3 digit.";
         return;
       }
 
-      // Validasi angka main, tiap baris angka max 6 digit angka
+      // Ambil angka main per baris, validasi angka max 6 digit
       const angkaMainLines = angkaMainRaw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
       for (const line of angkaMainLines) {
         if (!line.match(/^\d{1,6}$/)) {
@@ -293,15 +86,24 @@ ${out4D.join('')}
         }
       }
 
-      // Ambil ekor dari angka main (digit terakhir tiap baris)
-      let ekorMain = angkaMainLines.map(line => line.slice(-1));
+      // Ambil ekor angka main (digit terakhir tiap baris)
+      const ekorMain = angkaMainLines.map(line => line.slice(-1));
 
-      // Filter kombinasi 3D yang ekornya ada di ekorMain
+      // Filter kombinasi 3D yang ekor-nya ada di angka main (digit terakhir)
       let hasilFilter = kombinasi3D.filter(k => ekorMain.includes(k.slice(-1)));
 
-      // Contoh filter shioMain (ganti dengan logika asli kalau ada)
+      // Filter shio jika bukan 'all'
       if (shioMain !== "all") {
-        hasilFilter = hasilFilter.filter(k => k.includes("1")); // dummy filter shio
+        const shioList = shioMap[shioMain];
+        if (!shioList) {
+          alert("Shio tidak ditemukan dalam daftar.");
+          return;
+        }
+        // Filter kombinasi yang 2 digit terakhir (ekor) ada di daftar shio
+        hasilFilter = hasilFilter.filter(k => {
+          const duaDigitAkhir = k.slice(-2);
+          return shioList.includes(duaDigitAkhir);
+        });
       }
 
       if (hasilFilter.length === 0) {
@@ -309,10 +111,8 @@ ${out4D.join('')}
         return;
       }
 
-      // Tampilkan hasil di result
       resultDiv.textContent = `✅ Hasil filter (${hasilFilter.length} kombinasi):\n` + hasilFilter.join('\n');
     }
   </script>
-
 </body>
 </html>
