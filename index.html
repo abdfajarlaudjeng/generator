@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Spreadsheet</title>
+  <script>
+    async function handleLogin(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwBeK6OCkz7X9wVVn57eEHWQt-fYhrj3ZC9RTzSJE_aMfsxy5UGPKRUTFtV1r433zl7/exec", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await response.json();
+      const message = document.getElementById('message');
+
+      if (result.success) {
+        message.innerText = "✅ " + result.message;
+        message.style.color = "green";
+        // Redirect atau buka halaman lain jika diperlukan
+      } else {
+        message.innerText = "❌ " + result.message;
+        message.style.color = "red";
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Login</h2>
+  <form onsubmit="handleLogin(event)">
+    <label>Username: <input type="text" id="username" required></label><br><br>
+    <label>Password: <input type="password" id="password" required></label><br><br>
+    <button type="submit">Login</button>
+  </form>
+  <p id="message"></p>
+</body>
+</html>
